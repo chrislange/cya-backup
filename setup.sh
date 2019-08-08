@@ -27,10 +27,30 @@ else
 	read -p "Enter username: " username
 	read -s -p "Enter password: " password
 	sudo mount -t cifs -o user=$username,password=$password //$server/$share /mnt/backup
-
-	# Setup cron job
-	sudo cp ./files/backup.sh /etc/cron.weekly/cya-backup.sh
-	sudo chmod +x /etc/cron.weekly/cya-backup.sh
 fi
 
 [ ! -d /mnt/backup/$HOSTNAME ] && mkdir -p /mnt/backup/$HOSTNAME
+
+# Setup backup schedule
+echo
+echo "When should the backup run?"
+echo
+echo "[1] Daily"
+echo "[2] Weekly"
+echo "[3] Monthly"
+echo
+read -p ": " schedule
+
+if [ $schedule = "1" ]; then
+	echo "Backup setup for Daily schedule."
+	sudo cp ./files/backup.sh /etc/cron.daily/cya-backup.sh
+	sudo chmod +x /etc/cron.daily/cya-backup.sh
+elif [ $schedule = "2" ]; then
+	echo "Backup setup for Weekly schedule."
+	sudo cp ./files/backup.sh /etc/cron.weekly/cya-backup.sh
+	sudo chmod +x /etc/cron.weekly/cya-backup.sh
+elif [ $schedule = "3" ]; then
+	echo "Backup setup for Monthly schedule."
+	sudo cp ./files/backup.sh /etc/cron.monthly/cya-backup.sh
+	sudo chmod +x /etc/cron.monthly/cya-backup.sh
+fi
