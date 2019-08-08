@@ -27,7 +27,6 @@ else
 	read -p "Enter username: " username
 	read -s -p "Enter password: " password
 	sudo mount -t cifs -o user=$username,password=$password //$server/$share /mnt/backup
-	# sudo mount -t cifs -o user=${username} //${server}/${share} /mnt/backup
 
 	# Setup cron job
 	sudo cp ./files/backup.sh /etc/cron.weekly/cya-backup.sh
